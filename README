@@ -19,3 +19,7 @@ Notes on Requirements given:
 3) Changed the table definition of Phone to include 'Fax' in Type, as it is given in the requirement that exported data should be consistent with the imported one.
 4) For the same reason mentioned above the duplicate entries in home/work or work/mobile is not removed but output-ed to Data_Integrity Report.
 5) The Notes field contains special character, but since it is user field, this has not been removed but output-ed to Data_Integrity Report.
+
+Tests
+![ScreenShot](https://github.com/Resmi87/mysqImportcsv/master/screenshots/Batch_File_Run.jpg)
+![ScreenShot](https://github.com/Resmi87/mysqImportcsv/master/screenshots/Output.jpg)
