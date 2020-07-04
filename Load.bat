@@ -6,11 +6,12 @@ echo 1) The Source_File need to be placed in the location as specified against "
 echo 2) Please ensure that the Source_file name is contact_list.csv
 echo 3) Please ensure that the root/admin user details is present in .mylogin.cnf, as the MySQL scripts are 
 echo    run against root, using .mylogin.cnf
+echo 4) Please ensure that MySQL has been added to the Path variable
 echo. 
 
 :verify_confirm
 set user_confirm=Y
-set /P user_confirm= Please press enter or Y to proceed, or X to abort: 
+set /P user_confirm= If above conditions are satisfied, then please press enter or Y to proceed, or X to abort: 
 for %%? in (X Y) do if /I "%user_confirm%"=="%%?" goto Validate_Path_File
 goto :verify_confirm
 

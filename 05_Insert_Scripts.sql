@@ -1,22 +1,22 @@
 Use client_db;
 
-TRUNCATE TABLE COntact_List_Stg;
-Insert into Contact_List_STg
+TRUNCATE TABLE contact_list_stg;
+INSERT INTO contact_list_stg
 (
-title ,
-first_name ,
-last_name ,
-company_name ,
-date_of_birth ,
-notes ,
-street1 ,
-street2,
-suburb,
-city ,
-post_code  ,
-Home_Number ,
-Fax_Number ,
-Work_Number ,
+Title,
+First_Name,
+Last_Name,
+Company_Name,
+Date_of_Birth,
+Notes,
+Street1,
+Street2,
+Suburb,
+City,
+Post_Code,
+Home_Number,
+Fax_Number,
+Work_Number,
 Mobile_Number,
 Other_Number 
 )
@@ -40,7 +40,7 @@ SELECT
                 INTERVAL 100 YEAR)
         ELSE STR_TO_DATE(Date_of_Birth, '%m/%d/%Y')
     END Date_of_Birth,
-    NOtes,
+    Notes,
     Address_Line1,
     Address_Line2,
     Suburb,
@@ -75,20 +75,37 @@ FROM
 
 COMMIT;
 
-Truncate table contact;
+TRUNCATE TABLE contact;
 
 -- Assumptions
 -- Notes field special character not removed as it is user field
-Insert into contact (id, Title, First_Name, Last_Name,Company_Name, Date_Of_Birth,Notes)
-select Contact_id, title, first_name, last_name, company_name, Date_of_birth, substr(Notes,1,255) from contact_list_stg
-where Title in ('Mr', 'Mrs', 'Miss', 'Ms', 'Dr');
+INSERT INTO contact (id, Title, First_Name, Last_Name,Company_Name, Date_Of_Birth,Notes)
+SELECT 
+    Contact_id,
+    Title,
+    First_Name,
+    Last_Name,
+    company_name,
+    Date_of_birth,
+    SUBSTR(Notes, 1, 255)
+FROM
+    contact_list_stg
+WHERE
+    Title IN ('Mr' , 'Mrs', 'Miss', 'Ms', 'Dr');
 
 COMMIT;        
 
-Truncate table address;
+TRUNCATE TABLE address;
 
-Insert into address (contact_id, street1, street2, suburb,city,post_code)
-select contact_id, street1, street2, suburb,city,post_code from contact_list_stg;
+INSERT INTO address (contact_id, street1, street2, suburb,city,post_code)
+SELECT 
+	contact_id, 
+	street1, 
+	street2, 
+	suburb,
+	city,
+	post_code 
+FROM contact_list_stg;
 
 COMMIT;
 
@@ -99,26 +116,52 @@ COMMIT;
 -- and also it is mentioned exported data must be consistent
 -- Same reason for changing the phone definition to include 'Fax' in Type
 TRUNCATE TABLE PHONE;
-Insert  into Phone (contact_id, name, content, type)
-select contact_id, Coalesce(First_Name,last_Name,company_name) Name_det, Mobile_number as Ph_Number, 'Mobile' as ph_Type
-from contact_list_stg
-where ifnull(mobile_number,'') <> ''
-UNION 
-select contact_id, Coalesce(First_Name,last_Name,company_name), Home_number, 'Home' as ph_Type
-from contact_list_stg
-where ifnull(Home_number,'') <> ''
-union
-select contact_id, Coalesce(company_name,First_Name,last_Name), Work_number, 'Work' as ph_Type
-from contact_list_stg
-where ifnull(work_number,'') <> ''
-union
-select contact_id, Coalesce(company_name,First_Name,last_Name), Fax_number, 'Fax' as ph_Type
-from contact_list_stg
-where ifnull(fax_number,'') <> ''
-union
-select contact_id, Coalesce(company_name,First_Name,last_Name), Other_number, 'Other' as ph_Type
-from contact_list_stg
-where ifnull(Other_number,'') <> ''
-order by contact_id;
+INSERT  INTO Phone (contact_id, name, content, type)
+SELECT 
+    contact_id,
+    COALESCE(First_Name, last_Name, company_name) Name_det,
+    Mobile_number AS Ph_Number,
+    'Mobile' AS ph_Type
+FROM
+    contact_list_stg
+WHERE
+    IFNULL(mobile_number, '') <> '' 
+UNION SELECT 
+    contact_id,
+    COALESCE(First_Name, last_Name, company_name),
+    Home_number,
+    'Home' AS ph_Type
+FROM
+    contact_list_stg
+WHERE
+    IFNULL(Home_number, '') <> '' 
+UNION SELECT 
+    contact_id,
+    COALESCE(company_name, First_Name, last_Name),
+    Work_number,
+    'Work' AS ph_Type
+FROM
+    contact_list_stg
+WHERE
+    IFNULL(work_number, '') <> '' 
+UNION SELECT 
+    contact_id,
+    COALESCE(company_name, First_Name, last_Name),
+    Fax_number,
+    'Fax' AS ph_Type
+FROM
+    contact_list_stg
+WHERE
+    IFNULL(fax_number, '') <> '' 
+UNION SELECT 
+    contact_id,
+    COALESCE(company_name, First_Name, last_Name),
+    Other_number,
+    'Other' AS ph_Type
+FROM
+    contact_list_stg
+WHERE
+    IFNULL(Other_number, '') <> ''
+ORDER BY contact_id;
 
 COMMIT;

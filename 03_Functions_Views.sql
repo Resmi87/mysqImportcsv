@@ -85,7 +85,7 @@ SELECT
     ct.title,
     ct.first_name,
     ct.last_name,
-    ct.date_of_birth,
+	ct.date_of_birth,
     adr.street1 AS Address_Line1,
     adr.street2 AS Address_Line2,
     adr.suburb,

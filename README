@@ -1,0 +1,21 @@
+*** README ***
+Following are the assumptions taken:
+1) The Source_File need to be placed in the location as specified against "secure_file_priv" in my.ini, and please ensure you have write privilege to the location.
+2) Please ensure that the Source_file name is contact_list.csv
+3) Please ensure that the root/admin user details is present in .mylogin.cnf, as the MySQL scripts are run using .mylogin.cnf
+4) Please ensure that MySQL has been added to the Path variable
+
+Instructions:
+
+1) Please copy the files to a location in your computer
+2) In cmd, go to the location where the files are
+3) Run Load.bat file, this will run the related files to create client_db, load data and output reports (Data_Integrity.csv and Updated_Contact_List.csv)
+ 
+Credits: http://joezack.com/2008/10/20/mysql-capitalize-function/ for Initcap function slightly modified to suit the requirement. Had this function on-hand as part of studying.
+
+Notes on Requirements given:
+1) Based on the provided source_file data, Fax number is classified under landline and hence prefixed with 09.
+2) Since the name field in table Phone is of 64 char, either of first_name or last name will be chosen instead of concatenating.
+3) Changed the table definition of Phone to include 'Fax' in Type, as it is given in the requirement that exported data should be consistent with the imported one.
+4) For the same reason mentioned above the duplicate entries in home/work or work/mobile is not removed but output-ed to Data_Integrity Report.
+5) The Notes field contains special character, but since it is user field, this has not been removed but output-ed to Data_Integrity Report.
